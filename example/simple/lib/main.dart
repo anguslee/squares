@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _resetGame([bool ss = true]) {
-    game = bishop.Game(variant: bishop.Variant.standard());
+    game = bishop.Game(variant: bishop.Xiangqi.variant());
     state = game.squaresState(player);
     if (ss) setState(() {});
   }
@@ -75,36 +75,51 @@ class _HomePageState extends State<HomePage> {
         title: const Text('Squares Example'),
       ),
       body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(4.0),
-              child: BoardController(
-                state: flipBoard ? state.board.flipped() : state.board,
-                playState: state.state,
-                pieceSet: PieceSet.merida(),
-                theme: BoardTheme.brown,
-                moves: state.moves,
-                onMove: _onMove,
-                onPremove: _onMove,
-                markerTheme: MarkerTheme(
-                  empty: MarkerTheme.dot,
-                  piece: MarkerTheme.corners(),
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Padding(
+                padding: const EdgeInsets.all(4.0),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 0.7,
+                  child: BoardController(
+                    state: flipBoard ? state.board.flipped() : state.board,
+                    playState: state.state,
+                    pieceSet: PieceSet.xiangqi(),
+                    size: state.size,
+                    background: Squares.xiangqiBackground,
+                    backgroundConfig: BackgroundConfig.xiangqi,
+                    labelConfig: LabelConfig.disabled,
+                    theme: BoardTheme.brown,
+                    moves: state.moves,
+                    onMove: _onMove,
+                    onPremove: _onMove,
+                    piecePadding: 0.075,
+                    dragFeedbackSize: 1.5,
+                    markerTheme: MarkerTheme(
+                      empty: MarkerTheme.dot,
+                      piece: MarkerTheme.corners(),
+                    ),
+                    dragTargetFeedback: ColourDragTargetFeedback.fromTheme(
+                        theme: BoardTheme.brown,
+                        shape: BoxShape.circle
+                    ),
+                    promotionBehaviour: PromotionBehaviour.autoPremove,
+                  ),
                 ),
-                promotionBehaviour: PromotionBehaviour.autoPremove,
               ),
-            ),
-            const SizedBox(height: 32),
-            OutlinedButton(
-              onPressed: _resetGame,
-              child: const Text('New Game'),
-            ),
-            IconButton(
-              onPressed: _flipBoard,
-              icon: const Icon(Icons.rotate_left),
-            ),
-          ],
+              const SizedBox(height: 32),
+              OutlinedButton(
+                onPressed: _resetGame,
+                child: const Text('New Game'),
+              ),
+              IconButton(
+                onPressed: _flipBoard,
+                icon: const Icon(Icons.rotate_left),
+              ),
+            ],
+          ),
         ),
       ),
     );

@@ -116,7 +116,7 @@ class _GamePageState extends State<GamePage> {
                 ],
               ),
               Container(
-                color: widget.theme.lightSquare.withOpacity(0.5),
+                color: widget.theme.lightSquare.withValues(alpha: 128),
                 child: SelectableText(
                   state.board.fen(state.size),
                   textAlign: TextAlign.center,
